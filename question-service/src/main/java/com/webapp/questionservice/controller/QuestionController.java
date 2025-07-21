@@ -22,7 +22,7 @@ import com.webapp.questionservice.service.QuestionService;
 @RestController
 @RequestMapping("question")
 public class QuestionController {
-	
+	//sample checking
 	@Autowired
 	private QuestionService queSer;
 	
