@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.webapp.questionservice.dto.QuestionDTO;
 import com.webapp.questionservice.exception.CategoryNotFoundException;
+import com.webapp.questionservice.exception.NoQuestionException;
 import com.webapp.questionservice.exception.QuestionNotFoundException;
 import com.webapp.questionservice.model.Question;
 import com.webapp.questionservice.model.QuestionWrapper;
@@ -27,6 +28,9 @@ public class QuestionService {
 	
 	public List<QuestionDTO> allQuestions1(){
 		List<QuestionDTO> allQuestions1 = queRepo.findAllQuestions1();
+		if(allQuestions1.isEmpty()) {
+			throw new NoQuestionException("No quesions found");
+		}
 		System.out.println(allQuestions1.getFirst());
 		return allQuestions1;
 	}
@@ -78,6 +82,17 @@ public class QuestionService {
 			}
 		}
 		return right;
+	}
+	
+	public String deleteQuestionById(int id) {
+//		Optional<Question> byId = queRepo.findById(id);
+//		if(byId.isEmpty()) {
+//			throw new NoQuestionException("Que not found by with given id");
+//		}
+		System.out.println("id in delQue method:"+id);
+		Question question = queRepo.findById(id).orElseThrow(()->(new NoQuestionException("Question not found with id:"+ id)));
+		queRepo.deleteById(id);
+		return "Question with id:"+id+" deleted successfully";
 	}
 	
 }
